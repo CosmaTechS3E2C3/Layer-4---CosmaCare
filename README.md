@@ -1,8 +1,8 @@
 ⭐ Layer‑4 — CosmaCare
 Booking Engine • Benefits Engine • Settlement Engine • Identity Engine • Rewards Engine
 Powered by Layers 0–3, Extended by Layers 5–7
-1️⃣ 350‑Character Description
-CosmaCare is the Layer‑4 personal‑care + cosmetology benefits engine of the CosmaTech ecosystem. It provides booking, payouts, benefits, identity verification, tax automation, and rewards for 1099 workers. Built on Layers 0–3 and extended by Layers 5–7, CosmaCare transforms independent workers into verified, rewarded, benefit‑eligible CosmaTech professionals.
+
+1️⃣ CosmaCare is the Layer‑4 personal‑care + cosmetology benefits engine of the CosmaTech ecosystem. It provides booking, payouts, benefits, identity verification, tax automation, and rewards for 1099 workers. Built on Layers 0–3 and extended by Layers 5–7, CosmaCare transforms independent workers into verified, rewarded, benefit‑eligible CosmaTech professionals.
 
 2️⃣ Purpose
 CosmaCare exists to:
@@ -136,6 +136,7 @@ Layer‑4 — CosmaCare
     ├── booking.disputed
     ├── dispute.resolved
     └── rewards.minted
+
 5️⃣ Folder Structure (Aligned to Your Repo)
 Code
 Layer4---CosmaCare/
@@ -181,6 +182,8 @@ Layer4---CosmaCare/
 │
 ├── README.md
 └── CHANGELOG.md
+
+
 6️⃣ How CosmaCare Uses Layers 0–3
 Layer‑0 — CosmaBed
 Anchors booking commitments
