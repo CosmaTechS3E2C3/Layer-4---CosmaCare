@@ -1,5 +1,7 @@
 ⭐ CosmaCare Supabase Triggers + Workers (Layer‑4)
 Full system for syncing blockchain → Supabase → API Gateway → Realtime → Apps
+
+
 1️⃣ Purpose of Supabase Triggers + Workers
 Supabase triggers + workers exist to:
 
