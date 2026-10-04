@@ -1,46 +1,38 @@
-import React, { useState } from "react";
-import { useAPI } from "../hooks/useAPI";
-import { BookingCard } from "../components/BookingCard";
+import React, { useEffect, useState } from "react";
+import BookingCard from "../components/BookingCard";
+import PayoutSummary from "../components/PayoutSummary";
+import { useCosmaSDK } from "../hooks/useCosmaSDK";
+import { useParams } from "react-router-dom";
 
-export const ClientBookingPage: React.FC = () => {
-  const api = useAPI();
-  const [provider, setProvider] = useState("");
-  const [serviceId, setServiceId] = useState<number>(1);
-  const [scheduledAt, setScheduledAt] = useState<number>(Date.now());
+export default function ClientBookingPage() {
+  const { id } = useParams();
+  const sdk = useCosmaSDK();
 
-  const handleCreateBooking = async () => {
-    await api.createBooking({ provider, serviceId, scheduledAt });
-    // TODO: show toast, refresh list
-  };
+  const [booking, setBooking] = useState<any | null>(null);
+  const [settlement, setSettlement] = useState<any | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const b = await sdk.getBooking(Number(id));
+      if (b.success) setBooking(b.data);
+
+      const s = await sdk.getSettlement(Number(id));
+      if (s.success) setSettlement(s.data);
+    })();
+  }, [id]);
 
   return (
-    <div className="page">
-      <h1>Book a CosmaCare Service</h1>
-      {/* simple form */}
-      <input
-        placeholder="Provider address"
-        value={provider}
-        onChange={(e) => setProvider(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Service ID"
-        value={serviceId}
-        onChange={(e) => setServiceId(Number(e.target.value))}
-      />
-      <button onClick={handleCreateBooking}>Create Booking</button>
+    <div className="page-container">
+      <div className="page-title">Booking #{id}</div>
 
-      {/* Example booking card */}
-      <BookingCard
-        booking={{
-          id: 1,
-          provider,
-          client: "you",
-          serviceName: "Sample Service",
-          status: "Pending",
-        }}
-      />
+      {booking && <BookingCard booking={booking} />}
+
+      {settlement && (
+        <>
+          <div className="card-title">Settlement</div>
+          <PayoutSummary payout={settlement} />
+        </>
+      )}
     </div>
   );
-};
-
+}
