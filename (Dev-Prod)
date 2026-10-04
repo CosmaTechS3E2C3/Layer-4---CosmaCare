@@ -1,0 +1,54 @@
+### Dev (Web)
+
+```bash
+cd web
+npm install
+npm run dev
+# open http://localhost:5173
+
+Dev (Mobile)
+cd mobile
+npm install
+npm start
+# use Expo Go or simulator
+
+Contracts
+Compile/deploy with your preferred tool (Hardhat/Foundry):
+cd contracts
+# e.g. hardhat compile / deploy
+
+Ensure:
+
+Layer‑1 node is running.
+
+Layer‑0 node is running.
+
+API Gateway (Layer3f) is configured to expose CosmaCare endpoints.
+
+Realtime Events (Layer3d) emit CosmaCare events.
+
+Supabase (Layer3 Supabase Core) mirrors CosmaCare tables.
+
+##Production Considerations
+Run multiple Layer‑0 and Layer‑1 nodes.
+
+Use API Gateway as the single entry point for web/mobile.
+
+Use Realtime Events for live booking/settlement updates.
+
+Use Supabase for analytics, dashboards, and admin tools.
+
+Integrate CosmaCare into Layer‑5 (CosmaApp, CosmaVision) later.
+
+##Summary
+CosmaCare is your flagship Layer‑4 app that proves:
+
+Layer‑0–3 are real and usable.
+
+Benefits engines can run on real workers.
+
+Identity, scoring, tax, oracle, governance, bridge, ledger all work together.
+
+Web + mobile + contracts can be built on foundation.
+
+CosmaTech is not just theory—it’s a working ecosystem.
