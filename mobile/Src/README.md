@@ -20,5 +20,28 @@ This mobile app provides:
 - CosmaTech SDK
 
 ## Structure
+src/
+components/
+hooks/
+screens/
+styles/
+App.tsx
+config.ts
+
+
+## Environment
+
+Create a `.env` file:
+
+COSMACARE_API_BASE=https://api.cosmacare.tech
+COSMACARE_WS_URL=wss://ws.cosmacare.tech
+SUPABASE_URL=your-url
+SUPABASE_ANON_KEY=your-key
+
+
+## Run
+npm install
+npm start
+
 
 
