@@ -1,5 +1,8 @@
-export const COSMA_API_BASE = process.env.VITE_COSMA_API_BASE || "https://api.cosmatech.dev";
-export const COSMA_REALTIME_BASE = process.env.VITE_COSMA_REALTIME_BASE || "wss://events.cosmatech.dev";
-export const COSMA_SUPABASE_URL = process.env.VITE_SUPABASE_URL || "";
-export const COSMA_SUPABASE_KEY = process.env.VITE_SUPABASE_KEY || "";
+export const COSMACARE_API_BASE =
+  import.meta.env.VITE_COSMACARE_API_BASE || "http://localhost:8085/cosmacare";
 
+export const COSMACARE_WS_URL =
+  import.meta.env.VITE_COSMACARE_WS_URL || "ws://localhost:8087";
+
+export const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
+export const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
