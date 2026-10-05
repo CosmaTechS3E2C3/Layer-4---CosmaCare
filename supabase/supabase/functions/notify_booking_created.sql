@@ -1,17 +1,17 @@
-create or replace function notify_booking_created()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.booking.created',
-      'bookingId', NEW.id,
-      'clientAddress', NEW.client_address,
-      'providerAddress', NEW.provider_address,
-      'serviceId', NEW.service_id,
-      'scheduledAt', NEW.scheduled_at
-    )::text
+CREATE OR REPLACE FUNCTION notify_booking_created()
+RETURNS TRIGGER AS $$
+DECLARE
+  payload JSONB;
+BEGIN
+  payload := jsonb_build_object(
+    'event', 'booking.created',
+    'booking_id', NEW.id,
+    'client', NEW.client_address,
+    'provider', NEW.provider_address,
+    'status', NEW.status
   );
-  return NEW;
-end;
-$$ language plpgsql;
+
+  PERFORM pg_notify('cosmacare', payload::text);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
