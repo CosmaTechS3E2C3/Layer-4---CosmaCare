@@ -1,1 +1,31 @@
+{
+  "profiles": {
+    "read": ["provider", "client"],
+    "write": ["system"]
+  },
+  "services": {
+    "read": ["provider", "client"],
+    "write": ["system"]
+  },
+  "bookings": {
+    "read": ["provider", "client"],
+    "write": ["provider", "client", "system"]
+  },
+  "settlements": {
+    "read": ["provider", "client", "system"],
+    "write": ["system"]
+  },
+  "disputes": {
+    "read": ["provider", "client", "system"],
+    "write": ["provider", "client", "system"]
+  },
+  "rewards": {
+    "read": ["provider", "client", "system"],
+    "write": ["system"]
+  },
+  "governance": {
+    "read": ["provider", "client", "system"],
+    "write": ["system"]
+  }
+}
 
