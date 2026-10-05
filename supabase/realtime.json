@@ -1,1 +1,23 @@
+{
+  "channel": "cosmacare",
+  "tables": [
+    "profiles",
+    "bookings",
+    "disputes",
+    "rewards",
+    "settlements",
+    "governance_proposals",
+    "governance_votes",
+    "governance_events"
+  ],
+  "events": {
+    "booking.lifecycle": ["insert", "update"],
+    "dispute.lifecycle": ["insert", "update"],
+    "reward.minted": ["insert"],
+    "settlement.executed": ["insert"],
+    "governance.proposal": ["insert", "update"],
+    "governance.vote": ["insert"],
+    "governance.event": ["insert"]
+  }
+}
 
