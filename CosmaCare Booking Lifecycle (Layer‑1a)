@@ -1,0 +1,30 @@
+### CosmaCare Booking Lifecycle (Layer‑1a)
+
+CosmaCareBooking implements a deterministic lifecycle for all service bookings:
+
+1. **Pending**  
+   - Created by the client with `createBooking`.
+   - Awaiting provider confirmation.
+
+2. **Confirmed**  
+   - Set by the provider via `confirmBooking`.
+   - Time, provider, and service are locked in.
+
+3. **Completed**  
+   - Set by the provider via `completeBooking` after service delivery.
+   - Triggers eligibility for rewards and settlement.
+
+4. **Settled**  
+   - Executed via `CosmaCareSettlement.settleBooking`.
+   - Splits payment into provider, platform, partner, and burn shares.
+
+5. **Closed**  
+   - Booking is fully finalized (no further financial or operational actions).
+   - May be set automatically after settlement or via an admin function.
+
+6. **Disputed**  
+   - Opened via `CosmaCareDispute.openDispute` by the client.
+   - Resolved via `CosmaCareDispute.resolveDispute` by an admin, with resolution notes.
+
+All contracts emitting booking-related events must include at minimum:
+`bookingId`, `client`, `provider`, and (when available) `clientDid`, `providerDid`.
