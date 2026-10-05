@@ -1,1 +1,16 @@
+{
+  "version": "1.0.0",
+  "basePath": "/api",
+  "resources": [
+    { "name": "profiles", "path": "/profiles" },
+    { "name": "services", "path": "/services" },
+    { "name": "bookings", "path": "/bookings" },
+    { "name": "settlements", "path": "/settlements" },
+    { "name": "disputes", "path": "/disputes" },
+    { "name": "rewards", "path": "/rewards" },
+    { "name": "governance_policies", "path": "/governance/policies" },
+    { "name": "governance_proposals", "path": "/governance/proposals" },
+    { "name": "governance_votes", "path": "/governance/votes" }
+  ]
+}
 
