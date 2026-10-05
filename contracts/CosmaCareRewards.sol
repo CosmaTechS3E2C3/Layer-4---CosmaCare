@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -36,24 +35,31 @@ contract CosmaCareRewards {
 
     function mintReward(
         uint256 bookingId,
-        address provider,
         uint256 creditAmount,
         string calldata reasonCode
     ) external returns (uint256) {
         require(registry.isAdmin(msg.sender), "Only admin can mint rewards");
         require(booking.exists(bookingId), "Booking does not exist");
 
+        CosmaCareBooking.Booking memory b = booking.getBooking(bookingId);
+
         rewardCounter++;
         rewards[rewardCounter] = Reward({
             id: rewardCounter,
             bookingId: bookingId,
-            provider: provider,
+            provider: b.provider,
             creditAmount: creditAmount,
             reasonCode: reasonCode,
             mintedAt: block.timestamp
         });
 
-        emit RewardMinted(rewardCounter, bookingId, provider, creditAmount, reasonCode);
+        emit RewardMinted(
+            rewardCounter,
+            bookingId,
+            b.provider,
+            creditAmount,
+            reasonCode
+        );
         return rewardCounter;
     }
 
