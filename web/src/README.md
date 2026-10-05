@@ -30,17 +30,13 @@ styles/
 App.tsx
 config.ts
 
-## Environment
+# Cosma Web (Layer‑4)
 
-Create a `.env` file:
-VITE_COSMACARE_API_BASE=https://api.cosmacare.tech
-VITE_COSMACARE_WS_URL=wss://ws.cosmacare.tech
-VITE_SUPABASE_URL=your-url
-VITE_SUPABASE_ANON_KEY=your-key
+Universal Web client for CosmaCare, CosmaGigs, CaddiePro, FilmCore, CosmaSocial, CosmaStar.
 
-npm install
-npm run dev 
-## Build
+Connected to:
+- Layer‑1 contracts
+- Layer‑2 DID + scoring + ledger
+- Layer‑3 Supabase
+- Layer‑4 API + SDK
 
-npm run build
-npm run preview
