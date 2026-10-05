@@ -1,19 +1,22 @@
-CREATE OR REPLACE FUNCTION on_governance_vote_cast()
+CREATE OR REPLACE FUNCTION on_reward_minted()
 RETURNS TRIGGER AS $$
 DECLARE
   payload JSONB;
 BEGIN
   payload := jsonb_build_object(
-    'event', 'governance.vote.cast',
-    'vote_id', NEW.id,
-    'proposal_id', NEW.proposal_id,
-    'voter_address', NEW.voter_address,
-    'voter_did', NEW.voter_did,
-    'support', NEW.support
+    'event', 'reward.minted',
+    'reward_id', NEW.id,
+    'booking_id', NEW.booking_id,
+    'provider', NEW.provider_address,
+    'provider_did', NEW.provider_did,
+    'amount', NEW.credit_amount,
+    'token', NEW.token_symbol,
+    'reason_code', NEW.reason_code
   );
 
   PERFORM pg_notify('cosmacare', payload::text);
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
 
