@@ -1,1 +1,104 @@
+/* ===========================
+   GLOBAL THEME
+   =========================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+a {
+  color: #00a3ff;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ===========================
+   PAGE STRUCTURE
+   =========================== */
+
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+/* ===========================
+   CARD COMPONENT
+   =========================== */
+
+.card {
+  background-color: #111;
+  border: 1px solid #222;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 6px;
+}
+
+.card-text.small {
+  font-size: 12px;
+  color: #777;
+}
+
+/* ===========================
+   BUTTONS
+   =========================== */
+
+.btn {
+  background-color: #00a3ff;
+  color: #000;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.btn:hover {
+  background-color: #0088d1;
+}
+
+/* ===========================
+   INPUTS
+   =========================== */
+
+.input {
+  width: 100%;
+  background-color: #111;
+  border: 1px solid #222;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+textarea.input {
+  resize: vertical;
+}
 
