@@ -1,1 +1,44 @@
+{
+  "project": "CosmaCare Layer-3",
+  "description": "Supabase schema, realtime events, and protocol sync for CosmaCare",
+  "version": "2.0.0",
+  "tables": [
+    "profiles",
+    "services",
+    "bookings",
+    "settlements",
+    "disputes",
+    "rewards",
+    "governance_policies",
+    "governance_proposals",
+    "governance_votes",
+    "governance_events"
+  ],
+  "realtime": {
+    "channel": "cosmacare",
+    "events": [
+      "booking.lifecycle",
+      "booking.created",
+      "booking.confirmed",
+      "booking.completed",
+      "booking.settled",
+      "booking.closed",
+      "booking.disputed",
+
+      "dispute.opened",
+      "dispute.resolved",
+
+      "reward.minted",
+
+      "settlement.executed",
+
+      "profile.updated",
+
+      "governance.proposal.created",
+      "governance.proposal.voted",
+      "governance.proposal.finalized",
+      "governance.policy.updated"
+    ]
+  }
+}
 
