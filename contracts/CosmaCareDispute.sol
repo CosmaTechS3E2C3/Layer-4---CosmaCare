@@ -57,15 +57,15 @@ contract CosmaCareDispute {
     ) external returns (uint256) {
         require(booking.exists(bookingId), "Booking does not exist");
 
-        (address client, address provider, , , ) = booking.getBooking(bookingId);
-        require(msg.sender == client, "Only client can open dispute");
+        CosmaCareBooking.Booking memory b = booking.getBooking(bookingId);
+        require(msg.sender == b.client, "Only client can open dispute");
 
         disputeCounter++;
         disputes[disputeCounter] = Dispute({
             id: disputeCounter,
             bookingId: bookingId,
-            client: client,
-            provider: provider,
+            client: b.client,
+            provider: b.provider,
             reason: reason,
             status: DisputeStatus.Open,
             resolutionNote: "",
@@ -73,7 +73,7 @@ contract CosmaCareDispute {
             resolvedAt: 0
         });
 
-        emit DisputeOpened(disputeCounter, bookingId, client, provider, reason);
+        emit DisputeOpened(disputeCounter, bookingId, b.client, b.provider, reason);
         return disputeCounter;
     }
 
@@ -85,7 +85,10 @@ contract CosmaCareDispute {
         require(registry.isAdmin(msg.sender), "Only admin can resolve");
 
         Dispute storage d = disputes[disputeId];
-        require(d.status == DisputeStatus.Open || d.status == DisputeStatus.UnderReview, "Invalid status");
+        require(
+            d.status == DisputeStatus.Open || d.status == DisputeStatus.UnderReview,
+            "Invalid status"
+        );
 
         d.status = status;
         d.resolutionNote = resolutionNote;
@@ -98,4 +101,3 @@ contract CosmaCareDispute {
         return disputes[disputeId];
     }
 }
-
