@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/// @title CosmaCareRegistry
-/// @notice Registry for providers and clients, bound to CosmaID + S3E2C3 + ESEC
+import "./CosmaCareRoleManager.sol";
+
 contract CosmaCareRegistry {
     struct Provider {
         address account;
-        bytes32 did;          // CosmaID DID
-        uint256 esecScore;    // economic score
-        uint256 s3e2c3Tier;   // behavioral tier
+        bytes32 did;
+        uint256 esecScore;
+        uint256 s3e2c3Tier;
         bool active;
     }
 
@@ -21,8 +21,20 @@ contract CosmaCareRegistry {
     mapping(address => Provider) public providers;
     mapping(address => Client) public clients;
 
+    CosmaCareRoleManager public roles;
+
     event ProviderRegistered(address indexed account, bytes32 did);
     event ClientRegistered(address indexed account, bytes32 did);
+
+    constructor(address roleManager) {
+        roles = CosmaCareRoleManager(roleManager);
+    }
+
+    function isAdmin(address account) external view returns (bool) {
+        return
+            account == roles.superAdmin() ||
+            roles.roles(account) == CosmaCareRoleManager.Role.Admin;
+    }
 
     function registerProvider(bytes32 did) external {
         providers[msg.sender] = Provider({
@@ -44,4 +56,3 @@ contract CosmaCareRegistry {
         emit ClientRegistered(msg.sender, did);
     }
 }
-
