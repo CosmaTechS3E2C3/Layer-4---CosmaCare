@@ -1,17 +1,20 @@
 import { useEffect } from "react";
+import { ENV } from "../config";
+import { Events } from "../realtime/events";
 
 export function useRealtime(onEvent: (event: any) => void) {
   useEffect(() => {
-    const ws = new WebSocket(import.meta.env.VITE_COSMA_REALTIME_BASE + "/cosmacare");
-    ws.onmessage = (msg) => {
-      try {
-        const event = JSON.parse(msg.data);
-        onEvent(event);
-      } catch {
-        // ignore
+    const source = new EventSource(
+      `${ENV.apiBase.replace("/api", "")}/realtime/${ENV.realtimeChannel}`
+    );
+
+    source.onmessage = msg => {
+      const data = JSON.parse(msg.data);
+      if (Object.values(Events).includes(data.event)) {
+        onEvent(data);
       }
     };
-    return () => ws.close();
+
+    return () => source.close();
   }, [onEvent]);
 }
-
