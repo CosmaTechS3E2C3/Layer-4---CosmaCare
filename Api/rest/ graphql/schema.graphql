@@ -1,1 +1,92 @@
+type Profile {
+  id: ID!
+  address: String!
+  did: String
+  role: String
+  esec_score: Int
+  s3e2c3_tier: Int
+}
+
+type Service {
+  id: ID!
+  name: String!
+  base_price: Float!
+  s3e2c3_code: String!
+  active: Boolean!
+}
+
+type Booking {
+  id: ID!
+  client_address: String!
+  provider_address: String!
+  client_did: String
+  provider_did: String
+  service_id: ID!
+  scheduled_at: String
+  status: String!
+}
+
+type Settlement {
+  id: ID!
+  booking_id: ID!
+  total_amount: Float!
+  provider_amount: Float!
+  platform_amount: Float!
+  partner_amount: Float!
+  burn_amount: Float!
+  token_symbol: String!
+}
+
+type Dispute {
+  id: ID!
+  booking_id: ID!
+  raised_by: String!
+  reason: String
+  status: String!
+}
+
+type Reward {
+  id: ID!
+  booking_id: ID!
+  provider_address: String!
+  provider_did: String
+  credit_amount: Float!
+  token_symbol: String!
+  reason_code: String
+}
+
+type GovernancePolicy {
+  id: ID!
+  key: String!
+  value: String!
+  active: Boolean!
+}
+
+type GovernanceProposal {
+  id: ID!
+  proposer_address: String!
+  proposal_did: String
+  title: String!
+  status: String!
+}
+
+type GovernanceVote {
+  id: ID!
+  proposal_id: ID!
+  voter_address: String!
+  voter_did: String
+  support: Boolean!
+}
+
+type Query {
+  profiles: [Profile!]!
+  services: [Service!]!
+  bookings: [Booking!]!
+  settlements: [Settlement!]!
+  disputes: [Dispute!]!
+  rewards: [Reward!]!
+  governancePolicies: [GovernancePolicy!]!
+  governanceProposals: [GovernanceProposal!]!
+  governanceVotes(proposal_id: ID!): [GovernanceVote!]!
+}
 
