@@ -1,1 +1,20 @@
-
+{
+  "name": "cosma-mobile",
+  "version": "1.0.0",
+  "main": "App.tsx",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  },
+  "dependencies": {
+    "expo": "^51.0.0",
+    "react": "^18.2.0",
+    "react-native": "0.74.0",
+    "@reduxjs/toolkit": "^2.2.0",
+    "react-redux": "^9.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
