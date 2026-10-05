@@ -1,18 +1,22 @@
-create or replace function notify_settlement_created()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.booking.settled',
-      'bookingId', NEW.booking_id,
-      'settlementId', NEW.id,
-      'providerAmount', NEW.provider_amount,
-      'platformAmount', NEW.platform_amount,
-      'partnerAmount', NEW.partner_amount,
-      'burnAmount', NEW.burn_amount
-    )::text
+CREATE OR REPLACE FUNCTION notify_settlement_created()
+RETURNS TRIGGER AS $$
+DECLARE
+  payload JSONB;
+BEGIN
+  payload := jsonb_build_object(
+    'event', 'settlement.created',
+    'settlement_id', NEW.id,
+    'booking_id', NEW.booking_id,
+    'total_amount', NEW.total_amount,
+    'provider_amount', NEW.provider_amount,
+    'platform_amount', NEW.platform_amount,
+    'partner_amount', NEW.partner_amount,
+    'burn_amount', NEW.burn_amount,
+    'token', NEW.token_symbol
   );
-  return NEW;
-end;
-$$ language plpgsql;
+
+  PERFORM pg_notify('cosmacare', payload::text);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
