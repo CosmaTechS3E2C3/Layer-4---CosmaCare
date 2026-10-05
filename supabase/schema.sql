@@ -100,3 +100,60 @@ CREATE TABLE IF NOT EXISTS rewards (
   tx_hash TEXT
 );
 
+
+-- ============================
+-- GOVERNANCE POLICIES
+-- ============================
+CREATE TABLE IF NOT EXISTS governance_policies (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  key TEXT UNIQUE NOT NULL,
+  value TEXT NOT NULL,
+  active BOOLEAN DEFAULT TRUE,
+  updated_by TEXT,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================
+-- GOVERNANCE PROPOSALS
+-- ============================
+CREATE TABLE IF NOT EXISTS governance_proposals (
+  id BIGINT PRIMARY KEY,
+  proposer_address TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  policy_key TEXT,
+  policy_value TEXT,
+  policy_active BOOLEAN,
+  yes_votes INTEGER DEFAULT 0,
+  no_votes INTEGER DEFAULT 0,
+  status TEXT CHECK (
+    status IN ('pending', 'active', 'passed', 'failed', 'executed')
+  ),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  ends_at TIMESTAMPTZ
+);
+
+-- ============================
+-- GOVERNANCE VOTES
+-- ============================
+CREATE TABLE IF NOT EXISTS governance_votes (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  proposal_id BIGINT REFERENCES governance_proposals(id),
+  voter_address TEXT NOT NULL,
+  support BOOLEAN,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (proposal_id, voter_address)
+);
+
+-- ============================
+-- GOVERNANCE EVENTS (AUDIT LOG)
+-- ============================
+CREATE TABLE IF NOT EXISTS governance_events (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  event_type TEXT,
+  proposal_id BIGINT,
+  actor_address TEXT,
+  payload JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
