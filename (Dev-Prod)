@@ -1,54 +1,47 @@
-### Dev (Web)
+⭐ Dev‑Prod README
 
-```bash
-cd web
-npm install
-npm run dev
-# open http://localhost:5173
+Development Mode
+Local Supabase instance
 
-Dev (Mobile)
-cd mobile
-npm install
-npm start
-# use Expo Go or simulator
+Local API server
 
-Contracts
-Compile/deploy with your preferred tool (Hardhat/Foundry):
-cd contracts
-# e.g. hardhat compile / deploy
+Local workers (PM2)
 
-Ensure:
+Local mobile + web apps
 
-Layer‑1 node is running.
+Hardhat local blockchain
 
-Layer‑0 node is running.
+Dev Commands
+npm run dev (web)
 
-API Gateway (Layer3f) is configured to expose CosmaCare endpoints.
+expo start (mobile)
 
-Realtime Events (Layer3d) emit CosmaCare events.
+pm2 start ecosystem.config.js (workers)
 
-Supabase (Layer3 Supabase Core) mirrors CosmaCare tables.
+npx hardhat node (contracts)
 
-##Production Considerations
-Run multiple Layer‑0 and Layer‑1 nodes.
+Production Mode
+Supabase cloud
 
-Use API Gateway as the single entry point for web/mobile.
+API deployed to serverless or container
 
-Use Realtime Events for live booking/settlement updates.
+Workers deployed via PM2 or Docker
 
-Use Supabase for analytics, dashboards, and admin tools.
+Mobile built via Expo EAS
 
-Integrate CosmaCare into Layer‑5 (CosmaApp, CosmaVision) later.
+Web deployed via Vercel/Netlify
 
-##Summary
-CosmaCare is your flagship Layer‑4 app that proves:
+Contracts deployed to CosmaChain mainnet
 
-Layer‑0–3 are real and usable.
+Production Requirements
+ENV variables
 
-Benefits engines can run on real workers.
+API keys
 
-Identity, scoring, tax, oracle, governance, bridge, ledger all work together.
+Supabase service role
 
-Web + mobile + contracts can be built on foundation.
+RPC URLs
 
-CosmaTech is not just theory—it’s a working ecosystem.
+Contract addresses
+
+Governance keys
