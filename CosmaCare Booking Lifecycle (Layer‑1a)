@@ -1,30 +1,28 @@
-### CosmaCare Booking Lifecycle (Layer‑1a)
+##⭐ CosmaCare Booking Lifecycle (Layer‑1–3)
+(Place in CosmaCare/docs/BOOKING-LIFECYCLE.md)
 
-CosmaCareBooking implements a deterministic lifecycle for all service bookings:
+#1. Create Booking (Layer‑1)
+Contract: CosmaCareBooking.sol  
+Event: BookingLifecycleEvent(status="created")
 
-1. **Pending**  
-   - Created by the client with `createBooking`.
-   - Awaiting provider confirmation.
+#2. Supabase Insert (Layer‑3)
+Trigger: on_booking_created.sql  
+Realtime event emitted.
 
-2. **Confirmed**  
-   - Set by the provider via `confirmBooking`.
-   - Time, provider, and service are locked in.
+#3. Confirm Booking
+Contract event → worker → Supabase → realtime → apps.
 
-3. **Completed**  
-   - Set by the provider via `completeBooking` after service delivery.
-   - Triggers eligibility for rewards and settlement.
+#4. Complete Booking
+Contract event → worker → Supabase → realtime → apps.
 
-4. **Settled**  
-   - Executed via `CosmaCareSettlement.settleBooking`.
-   - Splits payment into provider, platform, partner, and burn shares.
+#5. Settlement
+Contract: CosmaCareSettlement.sol  
+Event: SettlementExecuted
 
-5. **Closed**  
-   - Booking is fully finalized (no further financial or operational actions).
-   - May be set automatically after settlement or via an admin function.
+Worker writes settlement to Supabase.
 
-6. **Disputed**  
-   - Opened via `CosmaCareDispute.openDispute` by the client.
-   - Resolved via `CosmaCareDispute.resolveDispute` by an admin, with resolution notes.
+#6. Rewards
+Contract: CosmaCareRewards.sol  
+Event: RewardMinted
 
-All contracts emitting booking-related events must include at minimum:
-`bookingId`, `client`, `provider`, and (when available) `clientDid`, `providerDid`.
+Worker writes reward to Supabase.
