@@ -1,386 +1,50 @@
-⭐ CosmaCare Supabase Triggers + Workers (Layer‑4)
-Full system for syncing blockchain → Supabase → API Gateway → Realtime → Apps
-
-
-1️⃣ Purpose of Supabase Triggers + Workers
-Supabase triggers + workers exist to:
-
-Mirror on‑chain events into Supabase tables
-
-Keep bookings, settlements, disputes, rewards in sync
-
-Emit realtime events to web/mobile apps
-
-Provide analytics for Layer‑5 CosmaVision
-
-Provide fraud detection signals for Layer‑6 NeoVision
-
-Provide compliance + reporting for Layer‑7 CosmaEnterprise
-
-This is how CosmaCare becomes production‑grade.
-
-2️⃣ Architecture Overview
-Code
-Layer‑1 Contracts → Layer‑3 API Gateway → Supabase Workers → Supabase Tables → Realtime Events → Web/Mobile Apps → Layer‑5/6/7 Analytics
-Supabase workers listen to:
-
-Layer‑1 contract events
-
-Layer‑3 API Gateway writes
-
-Layer‑3 Realtime events
-
-Then update:
-
-bookings
-
-settlements
-
-disputes
-
-rewards
-
-profiles
-
-3️⃣ Supabase Trigger Files (add to your repo)
-Create:
-
-Code
-Layer4---CosmaCare/supabase/triggers/
-Add these SQL files:
-
-✔ on_booking_created.sql
-sql
-create trigger on_booking_created
-after insert on bookings
-for each row
-execute procedure notify_booking_created();
-✔ on_booking_status_changed.sql
-sql
-create trigger on_booking_status_changed
-after update on bookings
-for each row
-execute procedure notify_booking_status_changed();
-✔ on_settlement_created.sql
-sql
-create trigger on_settlement_created
-after insert on settlements
-for each row
-execute procedure notify_settlement_created();
-✔ on_dispute_created.sql
-sql
-create trigger on_dispute_created
-after insert on disputes
-for each row
-execute procedure notify_dispute_created();
-✔ on_dispute_resolved.sql
-sql
-create trigger on_dispute_resolved
-after update on disputes
-for each row
-when (new.status = 'resolved')
-execute procedure notify_dispute_resolved();
-✔ on_reward_minted.sql
-sql
-create trigger on_reward_minted
-after insert on rewards
-for each row
-execute procedure notify_reward_minted();
-These triggers call Supabase Functions that emit realtime events.
-
-4️⃣ Supabase Functions (emit realtime events)
-Create:
-
-Code
-Layer4---CosmaCare/supabase/functions/
-✔ notify_booking_created.sql
-sql
-create or replace function notify_booking_created()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.booking.created',
-      'bookingId', NEW.id,
-      'clientAddress', NEW.client_address,
-      'providerAddress', NEW.provider_address,
-      'serviceId', NEW.service_id,
-      'scheduledAt', NEW.scheduled_at
-    )::text
-  );
-  return NEW;
-end;
-$$ language plpgsql;
-✔ notify_booking_status_changed.sql
-sql
-create or replace function notify_booking_status_changed()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.booking.' || NEW.status,
-      'bookingId', NEW.id
-    )::text
-  );
-  return NEW;
-end;
-$$ language plpgsql;
-✔ notify_settlement_created.sql
-sql
-create or replace function notify_settlement_created()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.booking.settled',
-      'bookingId', NEW.booking_id,
-      'settlementId', NEW.id,
-      'providerAmount', NEW.provider_amount,
-      'platformAmount', NEW.platform_amount,
-      'partnerAmount', NEW.partner_amount,
-      'burnAmount', NEW.burn_amount
-    )::text
-  );
-  return NEW;
-end;
-$$ language plpgsql;
-✔ notify_dispute_created.sql
-sql
-create or replace function notify_dispute_created()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.booking.disputed',
-      'bookingId', NEW.booking_id,
-      'disputeId', NEW.id,
-      'raisedBy', NEW.raised_by,
-      'reason', NEW.reason
-    )::text
-  );
-  return NEW;
-end;
-$$ language plpgsql;
-✔ notify_dispute_resolved.sql
-sql
-create or replace function notify_dispute_resolved()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.dispute.resolved',
-      'disputeId', NEW.id,
-      'bookingId', NEW.booking_id,
-      'status', NEW.status,
-      'resolutionNote', NEW.resolution_note
-    )::text
-  );
-  return NEW;
-end;
-$$ language plpgsql;
-✔ notify_reward_minted.sql
-sql
-create or replace function notify_reward_minted()
-returns trigger as $$
-begin
-  perform pg_notify(
-    'cosmacare',
-    json_build_object(
-      'event', 'cosmacare.rewards.minted',
-      'rewardId', NEW.id,
-      'bookingId', NEW.booking_id,
-      'providerAddress', NEW.provider_address,
-      'creditAmount', NEW.credit_amount,
-      'tokenSymbol', NEW.token_symbol,
-      'reasonCode', NEW.reason_code
-    )::text
-  );
-  return NEW;
-end;
-$$ language plpgsql;
-These functions emit realtime events that your web/mobile apps subscribe to.
-
-5️⃣ Supabase Workers (Node.js or Deno)
-Create:
-
-Code
-Layer4---CosmaCare/workers/
-Add:
-
-✔ bookingWorker.js
-Listens to Layer‑1 contract events:
-
-js
-import { listenToContractEvents } from "./chain";
-import { supabase } from "./client";
-
-listenToContractEvents("CosmaCareBooking", async (event) => {
-  if (event.name === "BookingCreated") {
-    await supabase.from("bookings").insert({
-      id: event.args.id,
-      client_address: event.args.client,
-      provider_address: event.args.provider,
-      service_id: event.args.serviceId,
-      scheduled_at: new Date(event.args.scheduledAt * 1000),
-      status: "pending",
-      tx_hash_create: event.transactionHash
-    });
-  }
-});
-✔ settlementWorker.js
-js
-listenToContractEvents("CosmaCareSettlement", async (event) => {
-  if (event.name === "SettlementExecuted") {
-    await supabase.from("settlements").insert({
-      booking_id: event.args.bookingId,
-      total_amount: event.args.totalAmount,
-      provider_amount: event.args.providerAmount,
-      platform_amount: event.args.platformAmount,
-      partner_amount: event.args.partnerAmount,
-      burn_amount: event.args.burnAmount,
-      token_symbol: "S1",
-      settled_at: new Date(),
-      tx_hash: event.transactionHash
-    });
-
-    await supabase.from("bookings")
-      .update({ status: "settled" })
-      .eq("id", event.args.bookingId);
-  }
-});
-✔ disputeWorker.js
-js
-listenToContractEvents("CosmaCareDispute", async (event) => {
-  if (event.name === "DisputeRaised") {
-    await supabase.from("disputes").insert({
-      booking_id: event.args.bookingId,
-      raised_by: event.args.raisedBy,
-      reason: event.args.reason,
-      status: "open",
-      created_at: new Date()
-    });
-  }
-});
-✔ rewardWorker.js
-js
-listenToContractEvents("CosmaCareRewards", async (event) => {
-  if (event.name === "RewardMinted") {
-    await supabase.from("rewards").insert({
-      booking_id: event.args.bookingId,
-      provider_address: event.args.provider,
-      credit_amount: event.args.amount,
-      token_symbol: event.args.token,
-      reason_code: event.args.reason,
-      minted_at: new Date(),
-      tx_hash: event.transactionHash
-    });
-  }
-});
-6️⃣ Worker → Realtime Integration
-Each worker writes into Supabase tables.
-
-Supabase triggers fire.
-
-Supabase functions emit realtime events.
-
-Your web/mobile apps receive:
+1. Supabase Triggers
+Universal triggers:
 
 booking.created
 
-booking.confirmed
+booking.status_changed
 
-booking.completed
-
-booking.settled
-
-booking.disputed
+dispute.created
 
 dispute.resolved
 
-rewards.minted
+settlement.created
 
-This is the full production loop.
+reward.minted
 
-7️⃣ Deployment
-You can deploy workers using:
+governance.proposal.created
 
-Supabase Edge Functions
+governance.vote.cast
 
-Cloudflare Workers
+profile.updated
 
-AWS Lambda
+governance.policy.updated
 
-Vercel Serverless
+2. Workers
+Workers listen to Layer‑1 events:
 
-Node.js PM2
+sync_chain_events.ts
 
-Deno Deploy
+sync_settlements.ts
 
-Recommended:
+sync_disputes.ts
 
-✔ Supabase Edge Functions
-Because they are:
+sync_rewards.ts
 
-fast
+Workers write to Supabase and emit realtime events.
 
-cheap
+3. Realtime
+Supabase realtime broadcasts:
 
-integrated
+booking updates
 
-secure
+dispute updates
 
-perfect for event mirroring
+settlement updates
 
-8️⃣ Monitoring
-Add:
+reward updates
 
-logs/bookingWorker.log
+governance updates
 
-logs/settlementWorker.log
-
-logs/disputeWorker.log
-
-logs/rewardWorker.log
-
-Use:
-
-Supabase logs
-
-API Gateway logs
-
-Realtime event logs
-
-9️⃣ Security
-Workers must verify contract addresses
-
-Workers must verify event signatures
-
-Workers must verify chain ID
-
-Workers must verify provider/client DID via CosmaID
-
-🔟 Summary: You now have a complete Layer‑4 CosmaCare backend
-With:
-
-Supabase schema
-
-Supabase triggers
-
-Supabase functions
-
-Supabase workers
-
-Realtime events
-
-API Gateway routes
-
-Contract events → Supabase sync
-
-Full integration with Layers 0–7
-
-This is production‑grade, enterprise‑ready, and scalable.
+Mobile + Web apps subscribe via EventSource.
