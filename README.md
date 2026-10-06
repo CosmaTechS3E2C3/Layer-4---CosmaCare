@@ -1,398 +1,287 @@
-⭐ Layer‑4 — CosmaCare
-Booking Engine • Benefits Engine • Settlement Engine • Identity Engine • Rewards Engine
-Powered by Layers 0–3, Extended by Layers 5–7
+⭐ Layer‑4 CosmaCare README (10‑Point Format)
+(Place in CosmaCare/README.md)
 
-1️⃣ CosmaCare is the Layer‑4 personal‑care + cosmetology benefits engine of the CosmaTech ecosystem. It provides booking, payouts, benefits, identity verification, tax automation, and rewards for 1099 workers. Built on Layers 0–3 and extended by Layers 5–7, CosmaCare transforms independent workers into verified, rewarded, benefit‑eligible CosmaTech professionals.
+1. Purpose of Layer‑4 — CosmaCare
+CosmaCare is the Layer‑4 application layer of the CosmaTech ecosystem.
+It provides the full booking, dispute, settlement, rewards, and governance workflows for service‑based interactions between clients and providers.
 
-2️⃣ Purpose
-CosmaCare exists to:
+Layer‑4 apps consume:
 
-Provide a TheCut‑style booking engine for cosmetology + personal‑care workers
+Layer‑0 (CosmaBed anchoring + DA)
 
-Deliver automatic payouts, benefits, and rewards using CosmaCoin + SpotCoin
+Layer‑1 (CosmaChain smart contracts)
 
-Enforce identity verification using CosmaID
+Layer‑2 (Identity, Scoring, Ledger, Governance, Oracle)
 
-Apply economic scoring (ESEC) and behavioral scoring (S3E2C3)
+Layer‑3 (Supabase, API Gateway, Realtime, Workers)
 
-Automate tax withholding + reporting using CosmaTax
+And expose functionality to:
 
-Provide settlement finality through Layer‑1 + Layer‑0
+Layer‑5 (CosmaApp super‑app)
 
-Mirror data in Supabase for analytics, dashboards, and enterprise tools
+Layer‑6 (AI modules)
 
-Integrate into CosmaApp, CosmaVision, CosmaSocial, CosmaStar
+Layer‑7 (Enterprise analytics + routing)
 
-CosmaCare is the benefits engine for the entire 1099 workforce inside CosmaTech.
+2. Core Features
+CosmaCare provides:
 
-3️⃣ Functions
-📦 Booking Functions
-Create booking
+Booking lifecycle (create → confirm → complete → settle)
 
-Confirm booking
+Dispute lifecycle (open → resolve)
 
-Complete booking
+Settlement engine (multi‑split payouts)
 
-View booking history
+Rewards engine (SpotCoin + CosmaCoin minting)
 
-Realtime booking updates
+Governance (proposals, votes, policies)
 
-💰 Settlement Functions
-Provider payout
+Provider registry + service catalog
 
-Platform fee
+DID‑based identity + scoring integration
 
-Partner share
+Realtime updates across all clients
 
-Burn / Treasury split
-
-Automatic tax withholding
-
-Settlement finality
-
-🪪 Identity Functions
-DID verification
-
-Provider registry
-
-Client registry
-
-Authenticity scoring (Layer‑6 NeoVision)
-
-📊 Scoring Functions
-ESEC economic scoring
-
-S3E2C3 behavioral tiering
-
-Rewards minting
-
-🧾 Tax Functions
-Auto‑withholding
-
-Auto‑reporting
-
-Settlement‑bound tax receipts
-
-⚖️ Dispute Functions
-Dispute creation
-
-Arbitration
-
-Settlement override
-
-🎁 Rewards Functions
-CosmaCoin / SpotCoin rewards
-
-Loyalty credits
-
-Tier upgrades
-
-CosmaCare is the complete economic + benefits engine for 1099 workers.
-
-4️⃣ Architecture Diagram (Line‑Style)
+3. Layer‑4 Folder Structure
 Code
-Layer‑4 — CosmaCare
-│
-├── Web App (PWA)
-│   ├── Booking UI
-│   ├── Provider Dashboard
-│   ├── Settlement View
-│   ├── Dispute Center
-│   └── Rewards View
-│
-├── Mobile App (Expo)
-│   ├── Booking Flow
-│   ├── Provider Dashboard
-│   ├── Payouts
-│   └── Disputes
-│
-├── Contracts (Layer‑1a)
-│   ├── Registry
-│   ├── ServiceCatalog
-│   ├── Booking
-│   ├── Settlement
-│   ├── Dispute
-│   └── Rewards
-│
-├── Supabase (Layer‑3)
-│   ├── profiles
-│   ├── services
-│   ├── bookings
-│   ├── settlements
-│   ├── disputes
-│   └── rewards
-│
-├── API Gateway (Layer‑3f)
-│   ├── /cosmacare/booking
-│   ├── /cosmacare/settlement
-│   ├── /cosmacare/disputes
-│   └── /cosmacare/rewards
-│
-└── Realtime Events (Layer‑3d)
-    ├── booking.created
-    ├── booking.confirmed
-    ├── booking.completed
-    ├── booking.settled
-    ├── booking.disputed
-    ├── dispute.resolved
-    └── rewards.minted
+CosmaCare/
+  contracts/
+  interfaces/
+  supabase/
+  api/
+  sdk/
+  backend/
+  workers/
+  mobile/
+  web/
+Each folder is universal across all Layer‑4 apps.
 
-5️⃣ Folder Structure (Aligned to Your Repo)
-Code
-Layer4---CosmaCare/
-│
-├── web/
-│   ├── src/
-│   │   ├── App.tsx
-│   │   ├── routes/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── config.ts
-│   │   └── styles/
-│   ├── public/
-│   ├── package.json
-│   └── README.md
-│
-├── mobile/
-│   ├── src/
-│   │   ├── App.tsx
-│   │   ├── screens/
-│   │   ├── hooks/
-│   │   ├── components/
-│   │   ├── config.ts
-│   │   └── styles/
-│   ├── app.json
-│   ├── package.json
-│   └── README.md
-│
-├── contracts/
-│   ├── CosmaCareRegistry.sol
-│   ├── CosmaCareServiceCatalog.sol
-│   ├── CosmaCareBooking.sol
-│   ├── CosmaCareSettlement.sol
-│   ├── CosmaCareDispute.sol
-│   └── CosmaCareRewards.sol
-│
-├── diagrams/
-│   ├── architecture.png
-│   ├── booking-flow.png
-│   ├── settlement-flow.png
-│   ├── s3e2c3-mapping.png
-│   └── contract-map.png
-│
-├── README.md
-└── CHANGELOG.md
+4. Smart Contracts (Layer‑1 Logic)
+CosmaCare uses 12 universal contracts:
 
+Booking
 
-6️⃣ How CosmaCare Uses Layers 0–3
-Layer‑0 — CosmaBed
-Anchors booking commitments
+Dispute
 
-Anchors settlement receipts
+Settlement
 
-Provides DA + integrity for all booking + payout data
+Rewards
 
-Provides finality for payouts
+Governance
 
-Layer‑1 — CosmaChain Core
-Executes booking lifecycle
+PolicyRegistry
 
-Executes settlement logic
+Registry
 
-Executes dispute logic
+RoleManager
 
-Executes rewards minting
+ServiceCatalog
 
-Maintains state for providers, clients, services
+Events (universal)
 
-Layer‑1a — Smart Contracts
-Registry contract
+Errors (universal)
 
-ServiceCatalog contract
+Modifiers (universal)
 
-Booking contract
+These contracts emit events consumed by Layer‑3 workers.
 
-Settlement contract
-
-Dispute contract
-
-Rewards contract
-
-Layer‑2 Protocols
-CosmaID → identity verification
-
-CosmaAI → authenticity scoring
-
-CosmaTax → auto‑withholding
-
-CosmaOracle → dynamic pricing
-
-CosmaGovernance → protocol upgrades
-
-CosmaBridge → cross‑chain payouts
-
-CosmaLedger → settlement receipts
-
-CosmaCoin / SpotCoin → payouts + rewards
-
-ESEC → economic scoring
-
-S3E2C3 → behavioral scoring
-
-Layer‑3 Infrastructure
-API Gateway → booking/settlement endpoints
-
-Realtime Events → booking + settlement streams
-
-Supabase Core → mirrored booking + payout data
-
-PWA Core → web app foundation
-
-Mobile Core → Expo app foundation
-
-App SDK → unified blockchain access
-
-CosmaCare is a first‑class Layer‑4 app fully powered by Layers 0–3.
-
-7️⃣ How CosmaCare Uses Layers 5–7
-⭐ Layer‑5 — CosmaApp Suite
-CosmaCare plugs into:
-
-CosmaApp Core → unified app shell
-
-CosmaVision → cross‑app identity + analytics
-
-CosmaMarket → marketplace for services
-
-CosmaMedia → content + tutorials
-
-CosmaStar (enhanced) → influencer + creator tools
-
-CosmaSocial (enhanced) → social graph for 1099 workers
-
-Why it matters:  
-Layer‑5 turns CosmaCare into part of a super‑app ecosystem, not a standalone app.
-
-⭐ Layer‑6 — AI Layer
+5. Supabase (Layer‑3 Database + Realtime)
 CosmaCare uses:
 
-AiCreatorDefender → protects providers from fraud
+Universal tables
 
-NeoVision → identity + risk + authenticity engine
+Universal triggers
 
-SleeperSniper → anomaly detection + threat scoring
+Universal functions
 
-Why it matters:  
-Layer‑6 makes CosmaCare safe, verified, fraud‑resistant, and enterprise‑grade.
+Universal migrations
 
-⭐ Layer‑7 — Enterprise Layer
-CosmaCare integrates with:
+Universal realtime channels
 
-Pillar 1 — Enterprise Compliance & Governance
-KYC/AML
-
-Enterprise onboarding
-
-Regulatory automation
-
-Fraud detection
-
-Banking integrations
-
-Enterprise SSO
-
-Pillar 2 — Enterprise Integrations
-ERP connectors
-
-CRM connectors
-
-HRIS connectors
-
-Banking rails
-
-Payment processors
-
-Enterprise data sync
-
-Pillar 3 — Enterprise Services & Partnerships
-Workforce analytics
-
-Industry‑specific compliance
-
-Multi‑location business tools
-
-Enterprise billing
-
-Enterprise reporting
-
-Workforce verification at scale
-
-Why it matters:  
-Layer‑7 transforms CosmaCare from a booking app into a global workforce infrastructure product.
-
-8️⃣ Supabase Schema (Aligned)
-Tables:
-
-profiles
-
-services
+Supabase is the single source of truth for:
 
 bookings
 
-settlements
-
 disputes
+
+settlements
 
 rewards
 
-Each table mirrors on‑chain state and supports analytics, dashboards, and enterprise reporting.
+profiles
 
-9️⃣ API Gateway Routes + Realtime Events
-API Routes
-/cosmacare/booking
+governance
 
-/cosmacare/booking/:id/confirm
+6. Workers (Layer‑3 → Layer‑4 Sync Engine)
+Workers sync:
 
-/cosmacare/booking/:id/complete
+Layer‑1 contract events → Supabase
 
-/cosmacare/settlement/:bookingId/execute
+Supabase triggers → Realtime
 
-/cosmacare/disputes
+Realtime → Mobile/Web apps
 
-/cosmacare/rewards/mint
+Workers include:
 
-Realtime Events
-cosmacare.booking.created
+sync_chain_events.ts
 
-cosmacare.booking.confirmed
+sync_settlements.ts
 
-cosmacare.booking.completed
+sync_disputes.ts
 
-cosmacare.booking.settled
+sync_rewards.ts
 
-cosmacare.booking.disputed
+emit_realtime_events.ts
 
-cosmacare.dispute.resolved
+7. API (Layer‑4 Gateway)
+REST + GraphQL endpoints:
 
-cosmacare.rewards.minted
+/bookings
 
-🔟 Summary: Why CosmaCare Matters
-CosmaCare is the first real Layer‑4 app that proves:
+/profiles
 
-Layers 0–3 are complete and functional
+/services
 
-Benefits engines can run on real workers
+/settlements
 
-Identity, scoring, tax, oracle, governance, bridge, ledger all work together
+/disputes
 
-Web + mobile + contracts + Supabase + API Gateway form a real ecosystem
+/rewards
 
-CosmaTech is not just a blockchain — it is a 1099 workforce infrastructure company
+/governance
 
-And your explanation about CosmaSocial → CosmaStars → 1099 workers is 100% correct:
+Backend routes are universal across all Layer‑4 apps.
 
-✔ CosmaCare = benefits engine
-✔ CosmaSocial = social graph for 1099 workers
-✔ CosmaStar = influencer + creator layer
-✔ CosmaTech = the ecosystem that ties them together
-This is exactly how Facebook started (college → global), and exactly how CosmaTech will scale (1099 workers → global workforce infrastructure).
+8. SDK (Layer‑4 Client Library)
+Universal SDK for:
+
+Mobile
+
+Web
+
+Layer‑5 super‑app
+
+Layer‑6 AI modules
+
+Provides unified access to all API endpoints.
+
+9. Mobile + Web Apps
+Universal UI layers:
+
+Mobile (React Native)
+
+Web (React + Vite)
+
+Both consume:
+
+Layer‑4 API
+
+Layer‑3 realtime
+
+Layer‑2 DID + scoring
+
+Layer‑1 contract events (via workers)
+
+10. Integration with Layers 5–7
+Layer‑5 (CosmaApp Super‑App)
+CosmaCare becomes a module inside the unified CosmaApp shell.
+
+Layer‑6 (AI Modules)
+AI modules consume CosmaCare data:
+
+fraud detection
+
+anomaly detection
+
+scoring
+
+authenticity verification
+
+Layer‑7 (Enterprise)
+Enterprise clients consume:
+
+booking analytics
+
+payout analytics
+
+dispute analytics
+
+compliance + tax reports
+
+⭐ Dev‑Prod README
+(Place in CosmaCare/DEV-PROD.md)
+
+Development Mode
+Local Supabase instance
+
+Local API server
+
+Local workers (PM2)
+
+Local mobile + web apps
+
+Hardhat local blockchain
+
+Dev Commands
+npm run dev (web)
+
+expo start (mobile)
+
+pm2 start ecosystem.config.js (workers)
+
+npx hardhat node (contracts)
+
+Production Mode
+Supabase cloud
+
+API deployed to serverless or container
+
+Workers deployed via PM2 or Docker
+
+Mobile built via Expo EAS
+
+Web deployed via Vercel/Netlify
+
+Contracts deployed to CosmaChain mainnet
+
+Production Requirements
+ENV variables
+
+API keys
+
+Supabase service role
+
+RPC URLs
+
+Contract addresses
+
+Governance keys
+
+⭐ CosmaCare Booking Lifecycle (Layer‑1–3)
+(Place in CosmaCare/docs/BOOKING-LIFECYCLE.md)
+
+1. Create Booking (Layer‑1)
+Contract: CosmaCareBooking.sol  
+Event: BookingLifecycleEvent(status="created")
+
+2. Supabase Insert (Layer‑3)
+Trigger: on_booking_created.sql  
+Realtime event emitted.
+
+3. Confirm Booking
+Contract event → worker → Supabase → realtime → apps.
+
+4. Complete Booking
+Contract event → worker → Supabase → realtime → apps.
+
+5. Settlement
+Contract: CosmaCareSettlement.sol  
+Event: SettlementExecuted
+
+Worker writes settlement to Supabase.
+
+6. Rewards
+Contract: CosmaCareRewards.sol  
+Event: RewardMinted
+
+Worker writes reward to Supabase.
